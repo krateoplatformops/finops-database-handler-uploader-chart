@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "finops-database-handler-uploader.fullname" . }}
   labels:
-  {{- include "finops-database-handler.labels" . | nindent 4 }}
+  {{- include "finops-database-handler-uploader.labels" . | nindent 4 }}
 data:
   {{- range $key, $value := .Values.env }}
   {{ $key }}: {{ $value | quote }}
