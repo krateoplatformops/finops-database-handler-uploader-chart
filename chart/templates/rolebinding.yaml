@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "finops-database-handler-uploader.fullname" . }}-leader-election
+  labels:
+  {{- include "finops-database-handler-uploader.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: '{{ include "finops-database-handler-uploader.fullname" . }}-leader-election'
+subjects:
+- kind: ServiceAccount
+  name: {{ include "finops-database-handler-uploader.serviceAccountName" . }}
+  namespace: '{{ .Release.Namespace }}'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "finops-database-handler-uploader.fullname" . }}-manager
+  labels:
+  {{- include "finops-database-handler-uploader.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: '{{ include "finops-database-handler-uploader.fullname" . }}-manager'
+subjects:
+- kind: ServiceAccount
+  name: {{ include "finops-database-handler-uploader.serviceAccountName" . }}
+  namespace: '{{ .Release.Namespace }}'

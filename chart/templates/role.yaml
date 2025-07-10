@@ -1,0 +1,85 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "finops-database-handler-uploader.fullname" . }}-leader-election
+  labels:
+  {{- include "finops-database-handler-uploader.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "finops-database-handler-uploader.fullname" . }}-manager
+  labels:
+  {{- include "finops-database-handler-uploader.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - finops.krateo.io
+  resources:
+  - notebooks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - finops.krateo.io
+  resources:
+  - notebooks/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - finops.krateo.io
+  resources:
+  - notebooks/status
+  verbs:
+  - get
+  - patch
+  - update
